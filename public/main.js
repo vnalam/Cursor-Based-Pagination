@@ -22,9 +22,9 @@ mainApp.controller('CreateCtrl', function($scope, $http, $window) {
    
         $http.post("http://localhost:1007/api/insert", {
 
-            "_id": eEmail,
-            "eName": eName,
-            "eEmail": eEmail
+      
+            "ename": eName,
+            "email": eEmail
          
         }).then(function(response) {
             if (response.data.error == undefined) {
@@ -40,11 +40,14 @@ mainApp.controller('CreateCtrl', function($scope, $http, $window) {
 mainApp.controller('RetrieveCtrl', function($scope, $http, $window,$rootScope) {
     $scope.getList = function() {
         var eEmail = $scope.eEmail;
-        $http.post("http://localhost:1007/api/retrieve",{"id":eEmail, "eEmail":eEmail}).then(function(response) {
-            alert(JSON.stringify(response))
+        $http.post("http://localhost:1007/api/retrieve",{"email":eEmail}).then(function(response) {
+            
 			if (response.data.error == undefined) {
                 
-				$scope.result=response.data.output;
+				alert(response.data.output.eName)
+				$scope.name=response.data.output.eName;
+				$scope.email=response.data.output.eEmail;
+				
 				
             } else {
                 $window.alert('Please Check Entered ID');
@@ -56,15 +59,14 @@ mainApp.controller('RetrieveCtrl', function($scope, $http, $window,$rootScope) {
 	//update data
 	$scope.update = function() {
 		
-		 var eName = document.getElementById('sNameUpdated').value;
+		 var eName = $scope.eName;
         var eEmail = $scope.eEmail;
 		alert(eName)
 		alert(eEmail)
         
         $http.post("http://localhost:1007/api/update", {
-			 "id": eEmail,
-            "eName": eName,
-            "eEmail": eEmail
+            "name": eName,
+            "email": eEmail
         }).then(function(response) {
           if (response.data.result!=0) {
               $window.alert('Data Updated Successfully!!');
